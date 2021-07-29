@@ -181,7 +181,7 @@ function handleClient(Socket $objConn, Parsoid $objParsoid) {
 }
 
 
-function runService(int $intPort) {
+function runService(string $strListenIP, int $intPort) {
     // make a parsoid
     $objParsoid = makeParsoid();
 
@@ -192,7 +192,7 @@ function runService(int $intPort) {
     }
 
     // bind
-    if (!\socket_bind($objSock, "0.0.0.0", $intPort)) {
+    if (!\socket_bind($objSock, $strListenIP, $intPort)) {
         throw SocketException::makeFromLast("bind", $objSock);
     }
 
@@ -219,10 +219,11 @@ function runService(int $intPort) {
 }
 
 $arrArgs = $_SERVER["argv"];
-if (count($arrArgs) !== 2) {
-    echo "Usage: php parseserver.php PORT\n";
+if (\count($arrArgs) < 2 || \count($arrArgs) > 3) {
+    echo "Usage: php parseserver.php PORT [LISTENIP]\n";
     exit;
 }
 
 $intPort = (int)$arrArgs[1];
-runService($intPort);
+$strListenIP = \count($arrArgs) > 2 ? $arrArgs[2] : "127.0.0.1";
+runService($strListenIP, $intPort);
