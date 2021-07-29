@@ -96,7 +96,7 @@ fn iterate_element(element: &Element) -> String {
                             // lists tend to contain fragments instead of sentences
                             // => skip
                         },
-                        "math"|"chem"|"timeline"|"syntaxhighlight"|"hiero"|"inputbox"|"score"|"graph"|"categorytree" => {
+                        "math"|"chem"|"timeline"|"syntaxhighlight"|"hiero"|"inputbox"|"score"|"graph"|"categorytree"|"maplink" => {
                             // this is anything but the natural language we're trying to process
                             // => skip
                         },

@@ -34,7 +34,7 @@ class ParseServerDataAccess extends MockDataAccess {
     public function parseWikitext(PageConfig $pageConfig, string $wikitext): array {
         preg_match('#<([A-Za-z][^\t\n\v />\0]*)#', $wikitext, $match);
         $blnStrict = true;
-        if (\in_array(\strtolower($match[1]), ['math', 'chem', 'timeline', 'syntaxhighlight', 'hiero', 'inputbox', 'score', 'graph', 'categorytree'], $blnStrict)) {
+        if (\in_array(\strtolower($match[1]), ['math', 'chem', 'timeline', 'syntaxhighlight', 'hiero', 'inputbox', 'score', 'graph', 'categorytree', 'maplink'], $blnStrict)) {
             return [
                 'html' => $wikitext,
                 'modules' => [],
