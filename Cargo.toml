@@ -1,0 +1,18 @@
+[package]
+name = "wikicrunch"
+version = "0.1.0"
+edition = "2018"
+
+[dependencies]
+clap = { version = "3.0.0-beta.2" }
+clap_derive = { version = "3.0.0-beta.2" }
+env_logger = { version = "0.9" }
+log = { version = "0.4" }
+once_cell = { version = "1.8" }
+pest = { version = "2.1" }
+pest_derive = { version = "2.1" }
+regex = { version = "1.5" }
+sxd-document = { version = "0.3" }
+sxd-xpath = { version = "0.4" }
+url = { version = "2.2" }
+xml-rs = { version = "0.8" }
