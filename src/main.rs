@@ -110,17 +110,31 @@ fn main() {
                         store_text = false;
 
                         if element_stack == text_level {
-                            let parse_it = if keep_going {
-                                true
-                            } else if let Some(ot) = &opts.title {
-                                if let Some(ct) = &current_title {
-                                    ot == ct
-                                } else {
-                                    false
+                            let mut parse_it = true;
+
+                            if let Some(ct) = &current_title {
+                                if ct.starts_with("Medium:") || ct.starts_with("Spezial:")
+                                    || ct.starts_with("Diskussion:")
+                                    || ct.starts_with("Benutzer:") || ct.starts_with("Benutzer Diskussion:")
+                                    || ct.starts_with("Datei:") || ct.starts_with("Datei Diskussion:")
+                                    || ct.starts_with("Vorlage:") || ct.starts_with("Vorlage Diskussion:")
+                                    || ct.starts_with("Kategorie:") || ct.starts_with("Kategorie Diskussion:") {
+
+                                    parse_it = false;
                                 }
-                            } else {
-                                true
-                            };
+                            }
+
+                            if parse_it && !keep_going {
+                                if let Some(ot) = &opts.title {
+                                    if let Some(ct) = &current_title {
+                                        parse_it = (ot == ct);
+                                    } else {
+                                        parse_it = false;
+                                    }
+                                } else {
+                                    parse_it = true;
+                                };
+                            }
 
                             if parse_it {
                                 let page_title = current_title
