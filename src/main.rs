@@ -129,14 +129,16 @@ fn main() {
                                 let xhtml = talk_to_server(opts.parse_server_port, page_title, &text)
                                     .unwrap();
 
-                                if opts.xhtml_output {
-                                    println!("{}", xhtml);
-                                }
+                                if xhtml.len() > 0 {
+                                    if opts.xhtml_output {
+                                        println!("{}", xhtml);
+                                    }
 
-                                if !opts.no_plain_output {
-                                    let plaintext = xhtml_to_plain(&xhtml)
-                                        .unwrap();
-                                    println!("{}", plaintext);
+                                    if !opts.no_plain_output {
+                                        let plaintext = xhtml_to_plain(&xhtml)
+                                            .unwrap();
+                                        println!("{}", plaintext);
+                                    }
                                 }
 
                                 if opts.and_after {

@@ -170,7 +170,13 @@ function handleClient(Socket $objConn, Parsoid $objParsoid) {
         'wrapSections' => false,
     ];
 
-    $strHtml = $objParsoid->wikitext2html($objPageConfig, $arrParsoidOpts);
+    $strHtml = '';
+    try {
+        $strHtml = $objParsoid->wikitext2html($objPageConfig, $arrParsoidOpts);
+    } catch (\DOMException $ex) {
+        // e.g. an angle bracket within a syntax highlighting block
+        $strHtml = '';
+    }
 
     // send back the length
     $binHtmlLen = int32ToBytes(\strlen($strHtml));
