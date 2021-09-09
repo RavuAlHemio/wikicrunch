@@ -63,6 +63,17 @@ fn talk_to_server(server_port: u16, title: &str, wikitext: &str) -> Result<Strin
 }
 
 
+macro_rules! output_line {
+    ($file:expr, $($args:expr),*) => {
+        if let Some(f) = &mut $file {
+            writeln!(f, $($args),*).expect("failed to write");
+        } else {
+            println!($($args),*);
+        }
+    };
+}
+
+
 fn main() {
     env_logger::init();
 
@@ -80,6 +91,7 @@ fn main() {
 
     {
         let file = File::open(&opts.wiki_xml).unwrap();
+        let mut out_file = opts.output_file.map(|f| File::create(f).expect("failed to open output file"));
         let reader = BufReader::new(file);
 
         let parser = EventReader::new(reader);
@@ -127,7 +139,7 @@ fn main() {
                             if parse_it && !keep_going {
                                 if let Some(ot) = &opts.title {
                                     if let Some(ct) = &current_title {
-                                        parse_it = (ot == ct);
+                                        parse_it = ot == ct;
                                     } else {
                                         parse_it = false;
                                     }
@@ -145,13 +157,13 @@ fn main() {
 
                                 if xhtml.len() > 0 {
                                     if opts.xhtml_output {
-                                        println!("{}", xhtml);
+                                        output_line!(out_file, "{}", xhtml);
                                     }
 
                                     if !opts.no_plain_output {
                                         let plaintext = xhtml_to_plain(&xhtml)
                                             .unwrap();
-                                        println!("{}", plaintext);
+                                        output_line!(out_file, "{}", plaintext);
                                     }
                                 }
 
@@ -176,7 +188,7 @@ fn main() {
                                 true
                             };
                             if output_title {
-                                println!("# {} TITLE: {}", page_count, text);
+                                output_line!(out_file, "# {} TITLE: {}", page_count, text);
                             }
                             current_title = Some(text.clone());
                         }
